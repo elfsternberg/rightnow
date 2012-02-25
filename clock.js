@@ -8,7 +8,7 @@ function sivamtime() {
     else { hour=hour; add="am"; }
     if (hour==12) { add="pm"; }
     time = azero(hour) + ":" + min + ":" + sec + " " + add;
-    if (document.getElementById) { document.getElementById('theTime').innerHTML = time; }
+    if (document.getElementById) { document.getElementById('thetime').innerHTML = time; }
     else if (document.layers) {
         document.layers.theTime.document.write(time);
         document.layers.theTime.document.close(); }

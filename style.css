@@ -1,0 +1,109 @@
+* {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+body {
+  margin: .25in .75in .25in 1.5in;
+  font: 13pt/190% Calibri, Georgia, "Lucida Bright", Lucidabright, "Bitstream Vera Serif", serif;
+  background-color: #fff;
+}
+p,
+th,
+td,
+li,
+ul,
+ol {
+  color: #333333;
+  margin: 0;
+  padding: 0;
+}
+p {
+  padding-bottom: 1em;
+}
+blockquote {
+  margin: 15px 30px 0 10px;
+  padding-left: 20px;
+  border-left: 5px solid #ddd;
+}
+h1 {
+  font-size: 1.7em;
+  margin: 0;
+  padding: .5em 0;
+  border-top: 7px solid #333;
+  border-bottom: 1px solid #999;
+}
+h2 {
+  font-size: 1.5em;
+  margin-bottom: 0em;
+  margin-top: .5em;
+  border-top: 3px solid #333;
+  padding: .25em 0;
+}
+h3 {
+  font-size: 1.1em;
+}
+h4 {
+  font-size: 1.0em;
+}
+ul, ol {
+  margin-left: 3em;
+}
+ul + p, ol + p {
+  margin-top: 1em;
+}
+hr {
+  border: 0;
+  width: 98%;
+  color: #999;
+  background-color: #eee;
+  height: 1px;
+  margin: 10px 0;
+}
+/* Everything above this is just a reset. */
+#content {
+  max-width: 732px;
+}
+#braindiv {
+  float: left;
+  width: 45%;
+  padding-right: 5%;
+}
+#braindiv img {
+  padding-bottom: 1em;
+}
+#braindiv .msg {
+  font-size: 24px;
+  color: #999;
+}
+#braindiv p {
+  width: 7em;
+  font-size: 20px;
+  margin: -3px 0 -8px 0;
+  padding: 0 0 0 0;
+}
+#braindiv p .doing {
+  color: #c00;
+}
+#rightnow {
+  float: left;
+  width: 49.9%;
+}
+#rightnow h3 {
+  color: #333;
+  font-size: 20px;
+  font-weight: normal;
+  line-height: 1.2;
+}
+#rightnow h3 strong {
+  font-weight: bold;
+}
+#rightnow ul {
+  margin-top: 20px;
+  font-size: 20px;
+  margin-left: 52px;
+}
+#rightnow ul li ul {
+  margin-top: 5px;
+  font-size: 17px;
+}
