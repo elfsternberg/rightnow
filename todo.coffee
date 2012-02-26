@@ -1,13 +1,56 @@
 class Category extends Backbone.Model
 
-
 class CategoryList extends Backbone.Collection
         lawnchair: new Lawnchair({ name: "RightNowCategoryList"}, new Function())
 
-
 class CategoryListView extends Backbone.View
     template: $("#todo-template").html()
+    editTemplate: $('#todo-edit-template').html()
     el: $('#todos')
+
+    events:
+        "click .task": "nowEdit"
+        "mouseover .task": "maybeEdit"
+        "mouseleave .task": "maybeNotEdit"
+
+    catAndTask: (t) -> $(t).attr('id').split('-')[1..2]
+
+    maybeEdit: (ev) ->
+        tg = $(ev.currentTarget)
+        return if tg.hasClass('editing')
+        ht = tg.data('hoverTimeout')
+        if ht?
+            clearTimeout tg.data 'hoverTimeout'
+        tg.data 'hoverTimeout', setTimeout (=> @edit tg), 300
+
+    maybeNotEdit: (ev) ->
+        tg = $(ev.currentTarget)
+        return if tg.hasClass('dirty')
+        ht = tg.data('hoverTimeout')
+        if ht?
+            clearTimeout tg.data 'hoverTimeout'
+        tg.data 'hoverTimeout', setTimeout (=> @stopEdit tg), 300
+
+    nowEdit: (ev) ->
+        tg = $(ev.currentTarget)
+        return if tg.hasClass('editing')
+        @edit(tg)
+
+    edit: (tg) =>
+        tg.addClass('editing')
+        [category, task] = @catAndTask(tg)
+        $(tg).html _.template @editTemplate,
+            task: @collection.at(category).get('tasks')[task]
+            taskid: task
+            catid: category
+        clearTimeout tg.data 'hoverTimeout'
+
+    stopEdit: (tg) =>
+        tg.removeClass('editing')
+        [category, task] = @catAndTask(tg)
+        $(tg).html (@collection.at(category).get('tasks')[task])
+        clearTimeout tg.data 'hoverTimeout'
+
     render: ->
         @el.html(_.template(@template, {'categories': @collection.toJSON()}))
 
@@ -16,7 +59,6 @@ $ ->
     categoryList.fetch
         success: (categoryList) ->
             if categoryList.length == 0
-                console.log("Adding?")
                 categoryList.add([
                     {
                         name: 'Writing:',

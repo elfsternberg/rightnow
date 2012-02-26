@@ -12,16 +12,22 @@
     %script#todo-template(type="text/x-underscore-tmpl")
       %ul
         <% for (var i=0,l=categories.length;i<l;++i) { var ct=categories[i]; %>
-        %li(id="cat<%= i %>")
-          <%= ct.name %>
+        %li(id="cat-<%= i %>")
+          <span class="category"><%= ct.name %></span>
           <% if (ct.tasks.length > 0) { %>
           %ul
             <% for (var j=0,m=ct.tasks.length;j<m;++j) { var td=ct.tasks[j]; %>
-            %li 
+            %li(id="cat-<%= i %>-<%= j %>" class="task")
               <%= td %>
             <% } %>
           <% } %>
         <% } %>
+
+    %script#todo-edit-template(type="text/x-underscore-tmpl")
+      .edit-task
+        %input(type="hidden" value="<%= task %>")/
+        %input(type="text" value="<%= task %>" class="edit-task-field")/
+        %input(type="button" class="delete-task-field" data-task="<%= catid %>-<%= taskid %>") X
 
   %body
     #content
