@@ -11,13 +11,13 @@
     <script id="todo-template" type="text/x-underscore-tmpl">
       <ul>
         <% for (var i=0,l=categories.length;i<l;++i) { var ct=categories[i]; %>
-        <li id="cat-<%= i %>">
-          <span class="category"><%= ct.name %></span>
+        <li class="category" id="cat-<%= i %>">
+          <div class="category"><%= ct.name %> <button class="addcat" style="display: none">+ New Project</button></div>
           <% if (ct.tasks.length > 0) { %>
           <ul>
             <% for (var j=0,m=ct.tasks.length;j<m;++j) { var td=ct.tasks[j]; %>
             <li class="task" id="cat-<%= i %>-<%= j %>">
-              <%= td %>
+              <div><%= td %></div>
             </li>
             <% } %>
           </ul>
@@ -28,9 +28,8 @@
     </script>
     <script id="todo-edit-template" type="text/x-underscore-tmpl">
       <div class="edit-task">
-        <input type="hidden" value="<%= task %>" />
-        <input class="edit-task-field" type="text" value="<%= task %>" />
-        <input class="delete-task-field" data-task="<%= catid %>-<%= taskid %>" type="button">X</input>
+        <input class="edit-task-field" id="edit-<%= catid %>-<%= taskid %>" type="text" value="<%= task %>" />
+        <button class="delete-task-field" data-task="<%= catid %>-<%= taskid %>">&#x02A2F;</button>
       </div>
     </script>
   </head>
@@ -47,7 +46,7 @@
         </div>
       </div>
       <div id="rightnow">
-        <h3>Wouldn't you <strong>rather</strong> be:</h3>
+        <h3 id="newcat">Wouldn't you <strong>rather</strong> be: <button class="addcat" style="display: none">+ New Category</button></h3>
         <div id="todos"></div>
       </div>
     </div>

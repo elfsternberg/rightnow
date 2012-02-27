@@ -12,22 +12,21 @@
     %script#todo-template(type="text/x-underscore-tmpl")
       %ul
         <% for (var i=0,l=categories.length;i<l;++i) { var ct=categories[i]; %>
-        %li(id="cat-<%= i %>")
-          <span class="category"><%= ct.name %></span>
+        %li(id="cat-<%= i %>" class="category")
+          <div class="category"><%= ct.name %> <button class="addcat" style="display: none">+ New Project</button></div>
           <% if (ct.tasks.length > 0) { %>
           %ul
             <% for (var j=0,m=ct.tasks.length;j<m;++j) { var td=ct.tasks[j]; %>
             %li(id="cat-<%= i %>-<%= j %>" class="task")
-              <%= td %>
+              <div><%= td %></div>
             <% } %>
           <% } %>
         <% } %>
 
     %script#todo-edit-template(type="text/x-underscore-tmpl")
       .edit-task
-        %input(type="hidden" value="<%= task %>")/
-        %input(type="text" value="<%= task %>" class="edit-task-field")/
-        %input(type="button" class="delete-task-field" data-task="<%= catid %>-<%= taskid %>") X
+        %input(type="text" value="<%= task %>" id="edit-<%= catid %>-<%= taskid %>" class="edit-task-field")/
+        %button(class="delete-task-field" data-task="<%= catid %>-<%= taskid %>") &#x02A2F;
 
   %body
     #content
@@ -40,7 +39,7 @@
           %p to be <strong class="doing">doing</strong>
           %p right now?
       #rightnow
-        %h3 Wouldn't you <strong>rather</strong> be:
+        %h3#newcat Wouldn't you <strong>rather</strong> be: <button class="addcat" style="display: none">+ New Category</button>
         #todos
   
     %script{:language => "javascript", :type => "text/javascript", :src => "clock.js"}

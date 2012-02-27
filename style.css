@@ -1,3 +1,4 @@
+/* -*- mode:css -*- */
 * {
   border: 0;
   margin: 0;
@@ -46,12 +47,10 @@ h3 {
 h4 {
   font-size: 1.0em;
 }
-ul,
-ol {
+ul, ol {
   margin-left: 3em;
 }
-ul + p,
-ol + p {
+ul + p, ol + p {
   margin-top: 1em;
 }
 hr {
@@ -110,12 +109,37 @@ hr {
   font-size: 17px;
 }
 .edit-task {
+  padding: 4px 2px 0px 5px;
+  text-shadow: 0px 1px 0px #fff;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+  border: 1px solid #ddd;
+  -webkit-box-shadow: 2px 1px 0px #efefef;
+  -moz-box-shadow: 2px 1px 0px #efefef;
+  box-shadow: 2px 1px 0px #efefef;
   width: 80%;
 }
 .edit-task input.edit-task-field {
   width: 80%;
+  border: 1px solid #eee;
+  padding-bottom: 0;
+  margin-bottom: 0;
+  margin-left: 5px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
 }
-.edit-task input.delete-task-field {
+.edit-task button.delete-task-field {
+  margin-top: 4px;
+  padding: 1px 4px 3px 3px;
+  font-weight: bold;
+  display: block;
   float: right;
-  padding-right: 5px;
+  margin-right: 10px;
+  background-color: #ff9f00;
+  color: #333;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
 }
