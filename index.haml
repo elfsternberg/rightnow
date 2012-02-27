@@ -39,7 +39,9 @@
           %p to be <strong class="doing">doing</strong>
           %p right now?
       #rightnow
-        %h3#newcat Wouldn't you <strong>rather</strong> be: <button class="addcat" style="display: none">+ New Category</button>
+        #newcat
+          %h1 Wouldn't you <strong>rather</strong> be: 
+          <button class="fadebutton addcat" style="display: none">+ New Category</button>
         #todos
   
     %script{:language => "javascript", :type => "text/javascript", :src => "clock.js"}
@@ -49,7 +51,4 @@
     %script{:language => "javascript", :type => "text/javascript", :src => "lib/lawnchair-indexed-db.js"}
     %script{:language => "javascript", :type => "text/javascript", :src => "lib/lawnchair-window-name.js"}
     %script{:language => "javascript", :type => "text/javascript", :src => "lib/zepto.js"}
-    %script{:language => "javascript", :type => "text/javascript", :src => "lib/underscore.js"}
-    %script{:language => "javascript", :type => "text/javascript", :src => "lib/backbone.js"}
-    %script{:language => "javascript", :type => "text/javascript", :src => "lib/backbone.lawnchair.js"}
     %script{:language => "javascript", :type => "text/javascript", :src => "todo.js"}

@@ -22,33 +22,32 @@ ol {
 p {
   padding-bottom: 1em;
 }
-blockquote {
-  margin: 15px 30px 0 10px;
-  padding-left: 20px;
-  border-left: 5px solid #ddd;
+#rightnow {
+  float: left;
+  width: 49.9%;
 }
-h1 {
-  font-size: 1.7em;
-  margin: 0;
-  padding: .5em 0;
-  border-top: 7px solid #333;
-  border-bottom: 1px solid #999;
+#rightnow h1 {
+  padding-bottom: 0;
+  border: none;
+  color: #333;
+  font-size: 20px;
+  font-weight: normal;
+  line-height: 1.2;
 }
-h2 {
-  font-size: 1.5em;
-  margin-bottom: 0em;
-  margin-top: .5em;
-  border-top: 3px solid #333;
-  padding: .25em 0;
+#rightnow h1 strong {
+  font-weight: bold;
 }
-h3 {
-  font-size: 1.1em;
+#rightnow ul {
+  margin-top: 20px;
+  font-size: 20px;
+  margin-left: 12%;
 }
-h4 {
-  font-size: 1.0em;
+#rightnow ul li ul {
+  margin-top: 5px;
+  font-size: 17px;
 }
 ul, ol {
-  margin-left: 3em;
+  margin-left: 4%;
 }
 ul + p, ol + p {
   margin-top: 1em;
@@ -86,28 +85,6 @@ hr {
 #braindiv p .doing {
   color: #c00;
 }
-#rightnow {
-  float: left;
-  width: 49.9%;
-}
-#rightnow h3 {
-  color: #333;
-  font-size: 20px;
-  font-weight: normal;
-  line-height: 1.2;
-}
-#rightnow h3 strong {
-  font-weight: bold;
-}
-#rightnow ul {
-  margin-top: 20px;
-  font-size: 20px;
-  margin-left: 52px;
-}
-#rightnow ul li ul {
-  margin-top: 5px;
-  font-size: 17px;
-}
 .edit-task {
   padding: 4px 2px 0px 5px;
   text-shadow: 0px 1px 0px #fff;
@@ -142,4 +119,14 @@ hr {
   -webkit-border-radius: 20px;
   -moz-border-radius: 20px;
   border-radius: 20px;
+}
+.addstory, .addcat, .editcat {
+  background-color: #ff9f00;
+  font-weight: bold;
+  padding: 2px 6px 3px 6px;
+  color: #111;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+  margin-left: 10px;
 }
