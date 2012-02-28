@@ -146,7 +146,7 @@
           val = $('.edit-task-field', tg).val();
           if (val.trim() === "") return deleteTask(ev);
           _this.todos[cid].tasks[tid] = val;
-          return _this.save;
+          return _this.save();
         };
         code = ev.keyCode ? ev.keyCode : ev.which;
         if (code === 13) return taskSave();

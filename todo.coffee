@@ -114,7 +114,7 @@ class RightNow
                 val = $('.edit-task-field', tg).val()
                 return deleteTask(ev) if val.trim() == ""
                 @todos[cid].tasks[tid] = val
-                @save
+                @save()
 
             code = if ev.keyCode then ev.keyCode else ev.which
             return taskSave() if code == 13
