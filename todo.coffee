@@ -180,6 +180,8 @@ class RightNow
     render: =>
         cat_render = (cat) ->
             cat_enumerate = (c) ->
+                # Guard condition needed because coffeescript will
+                # cheerfully create a range (0, -1) if length == 0
                 return [] if c.length == 0
                 ({idx: i, name: c[i].name, tasks: c[i].tasks} for i in [0..c.length - 1])
 
