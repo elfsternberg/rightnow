@@ -7,18 +7,30 @@
     function RightNow(repo) {
       var _this = this;
       this.repo = repo;
-      this.editTask = __bind(this.editTask, this);
+      this.render = __bind(this.render, this);
       this.newTask = __bind(this.newTask, this);
-      this.deleteTask = __bind(this.deleteTask, this);
-      this.maybeTaskSave = __bind(this.maybeTaskSave, this);
-      this.endEdits = __bind(this.endEdits, this);
+      this.editTask = __bind(this.editTask, this);
+      this.newCategory = __bind(this.newCategory, this);
+      this.editCategory = __bind(this.editCategory, this);
       this.showAddButton = __bind(this.showAddButton, this);
       this.repo.get('rightnow', function(cat) {
-        _this.todos = cat.rightnow;
+        _this.todos = (cat != null) && (cat.rightnow != null) ? cat.rightnow : [];
         _this.render();
-        return $('body').on('click', _this.endEdits);
+        $('body').on('click', _this.render);
+        $('#newcat h1').on('click', _this.showAddButton);
+        return $('#addcat').on('click', _this.newCategory);
       });
     }
+
+    RightNow.prototype.save = function() {
+      var _this = this;
+      return this.repo.save({
+        key: 'rightnow',
+        'rightnow': this.todos
+      }, function() {
+        return _this.render();
+      });
+    };
 
     RightNow.prototype.catAndTask = function(t) {
       var i, _i, _len, _ref, _results;
@@ -35,56 +47,6 @@
       return parseInt($(t).attr('id').split('-')[1]);
     };
 
-    RightNow.prototype.cat_render = function(cat) {
-      var cat_enumerate, cat_renderer, i, task_enumerate, tasks_render, tasks_renderer;
-      cat_enumerate = function(c) {
-        var i, _ref, _results;
-        _results = [];
-        for (i = 0, _ref = c.length - 1; 0 <= _ref ? i <= _ref : i >= _ref; 0 <= _ref ? i++ : i--) {
-          _results.push([i, c[i].name, c[i].tasks]);
-        }
-        return _results;
-      };
-      cat_renderer = function(c, r) {
-        return ("<li id=\"cat-" + i[0] + "\"><div class=\"catcontainer\"><div class=\"category\">" + i[1] + "</div>") + "<button class=\"fadebutton addstory\" style=\"display:none\">+ New Project</button>" + ("<button class=\"fadebutton editcat\" style=\"display:none\">Edit Category</button></div>" + r + "</li>");
-      };
-      task_enumerate = function(t) {
-        var i, _ref, _results;
-        _results = [];
-        for (i = 0, _ref = t.length - 1; 0 <= _ref ? i <= _ref : i >= _ref; 0 <= _ref ? i++ : i--) {
-          _results.push([i, t[i]]);
-        }
-        return _results;
-      };
-      tasks_renderer = function(cid, tid, task) {
-        return "<li id=\"cat-" + cid + "-" + tid + "\" class=\"task\"><div>" + task + "</div></li>";
-      };
-      tasks_render = function(cid, tasks) {
-        var i;
-        if (!tasks.length) return "";
-        return "<ul>" + ((function() {
-          var _i, _len, _ref, _results;
-          _ref = task_enumerate(tasks);
-          _results = [];
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            i = _ref[_i];
-            _results.push(tasks_renderer(cid, i[0], i[1]));
-          }
-          return _results;
-        })()).join("") + "</ul>";
-      };
-      return "<ul>" + ((function() {
-        var _i, _len, _ref, _results;
-        _ref = cat_enumerate(cat);
-        _results = [];
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          i = _ref[_i];
-          _results.push(cat_renderer(i, tasks_render(i[0], i[2])));
-        }
-        return _results;
-      })()).join("") + "</ul>";
-    };
-
     RightNow.prototype.showAddButton = function(ev) {
       var tg;
       ev.stopPropagation();
@@ -96,23 +58,136 @@
       }), 2500));
     };
 
-    RightNow.prototype.endEdits = function() {
+    RightNow.prototype.editCategory = function(ev) {
+      var cid, deleteCat, edit_render, maybeCatSave, tg;
       var _this = this;
-      return $('li.editing').each(function(i, el) {
-        var cid, tid, _ref;
-        $(el).removeClass('editing');
-        _ref = _this.catAndTask(el), cid = _ref[0], tid = _ref[1];
-        if (!(_this.todos[cid].tasks[tid] != null)) {
-          return $(el).remove();
-        } else {
-          return $(el).html(_this.todos[cid].tasks[tid]);
+      ev.stopPropagation();
+      tg = $($(ev.currentTarget).closest('li.cat'));
+      edit_render = function(cid, category) {
+        return "<div class=\"edit-category\">" + ("<input type=\"text\" value=\"" + category + "\" id=\"edit-" + cid + "\" ") + "class=\"edit-task-field\" />" + ("<button class=\"delete-task-field\" id=\"del-" + cid + "\">&#x02A2F;</button>") + "</div>";
+      };
+      cid = this.catOnly(tg);
+      tg.html(edit_render(cid, this.todos[cid].name));
+      deleteCat = function(ev) {
+        ev.stopPropagation();
+        if (_this.todos[cid].tasks.length) {
+          alert("You cannot delete a category with existing tasks");
+          return;
         }
+        _this.todos = _this.todos.slice(0, cid).concat(_this.todos.slice(cid + 1, _this.todos.length));
+        return _this.save();
+      };
+      maybeCatSave = function(ev) {
+        var catSave, code;
+        catSave = function() {
+          _this.todos[cid].name = $('.edit-task-field', tg).val();
+          return _this.save();
+        };
+        code = ev.keyCode ? ev.keyCode : ev.which;
+        if (code === 13) return catSave();
+        if (code === 27) return _this.cleanAndRender();
+      };
+      $('.edit-category', tg).on('click', function(ev) {
+        return ev.stopPropagation();
       });
+      $('input.edit-task-field', tg).on('keyup', maybeCatSave);
+      $('.delete-task-field', tg).on('click', deleteCat);
+      return $('input.edit-task-field', tg).focus();
     };
 
-    RightNow.prototype.cleanAndEndEdits = function() {
+    RightNow.prototype.newCategory = function(ev) {
+      var edit_render, maybeNewCatSave, tg;
+      var _this = this;
+      ev.stopPropagation();
+      edit_render = "<div class=\"edit-category\">" + "<input type=\"text\" id=\"edit-new-cid\" class=\"edit-task-field\" />" + "<button class=\"delete-task-field\" id=\"del-new-cid\">&#x02A2F;</button>" + "</div>";
+      tg = $('#categorylist').append('<li class="category editing newcategory">' + edit_render + '</li>');
+      maybeNewCatSave = function(ev) {
+        var catSave, code;
+        catSave = function() {
+          _this.todos.push({
+            'name': $('#edit-new-cid').val(),
+            tasks: []
+          });
+          return _this.save();
+        };
+        code = ev.keyCode ? ev.keyCode : ev.which;
+        if (code === 13) return catSave();
+        if (code === 27) return _this.cleanAndRender();
+      };
+      $('.edit-category', tg).on('click', function(ev) {
+        return ev.stopPropagation();
+      });
+      $('input.edit-task-field', tg).on('keyup', maybeNewCatSave);
+      $('.delete-task-field', tg).on('click', this.render);
+      return $('input.edit-task-field', tg).focus();
+    };
+
+    RightNow.prototype.editTask = function(ev) {
+      var cid, deleteTask, edit_render, maybeTaskSave, tg, tid, _ref;
+      var _this = this;
+      ev.stopPropagation();
+      tg = $(ev.currentTarget);
+      edit_render = function(cid, tid, task) {
+        return "<div class=\"edit-task\">" + ("<input type=\"text\" value=\"" + task + "\" id=\"edit-" + cid + "-" + tid + "\" ") + "class=\"edit-task-field\" />" + ("<button class=\"delete-task-field\" id=\"del-" + cid + "-" + tid + "\">&#x02A2F;</button>") + "</div>";
+      };
+      _ref = this.catAndTask(tg), cid = _ref[0], tid = _ref[1];
+      tg.html(edit_render(cid, tid, this.todos[cid].tasks[tid]));
+      deleteTask = function(ev) {
+        var t;
+        ev.stopPropagation();
+        t = _this.todos[cid].tasks;
+        _this.todos[cid].tasks = t.slice(0, tid).concat(t.slice(tid + 1, t.length));
+        return _this.save();
+      };
+      maybeTaskSave = function(ev) {
+        var code, taskSave;
+        taskSave = function() {
+          var val;
+          val = $('.edit-task-field', tg).val();
+          if (val.trim() === "") return deleteTask(ev);
+          _this.todos[cid].tasks[tid] = val;
+          return _this.save;
+        };
+        code = ev.keyCode ? ev.keyCode : ev.which;
+        if (code === 13) return taskSave();
+        if (code === 27) return _this.cleanAndRender();
+      };
+      $('.edit-category', tg).on('click', function(ev) {
+        return ev.stopPropagation();
+      });
+      $('input.edit-task-field', tg).on('keyup', maybeTaskSave);
+      $('.delete-task-field', tg).on('click', deleteTask);
+      return $('input.edit-task-field', tg).focus();
+    };
+
+    RightNow.prototype.newTask = function(ev) {
+      var cid, edit_render, maybeNewTaskSave, tg;
+      var _this = this;
+      ev.stopPropagation();
+      edit_render = "<div class=\"edit-task\">" + "<input type=\"text\" value=\"\" id=\"edit-new-task\" " + "class=\"edit-task-field\" />" + "<button class=\"delete-task-field\" id=\"del-new-task\">&#x02A2F;</button>" + "</div>";
+      cid = this.catOnly(ev.currentTarget);
+      tg = $("#tasklist-" + cid).append('<li class="task editing newcategory">' + edit_render + '</li>');
+      maybeNewTaskSave = function(ev) {
+        var code, taskSave;
+        taskSave = function() {
+          _this.todos[cid].tasks.push($('#edit-new-task').val());
+          return _this.save();
+        };
+        code = ev.keyCode ? ev.keyCode : ev.which;
+        if (code === 13) return taskSave();
+        if (code === 27) return _this.cleanAndRender();
+      };
+      $('.edit-category', tg).on('click', function(ev) {
+        return ev.stopPropagation();
+      });
+      $('input.edit-task-field', tg).on('keyup', maybeNewTaskSave);
+      $('.delete-task-field', tg).on('click', this.render);
+      return $('input.edit-task-field', tg).focus();
+    };
+
+    RightNow.prototype.clean = function() {
       var c, t;
-      this.todos = (function() {
+      return this.todos = (function() {
         var _i, _len, _ref, _results;
         _ref = this.todos;
         _results = [];
@@ -136,125 +211,77 @@
         }
         return _results;
       }).call(this);
-      return this.endEdits();
     };
 
-    RightNow.prototype.save = function() {
-      var _this = this;
-      return this.repo.save({
-        key: 'rightnow',
-        'rightnow': this.todos
-      }, function() {
-        return _this.render();
-      });
+    RightNow.prototype.cleanAndRender = function() {
+      this.clean();
+      return this.render();
     };
-
-    RightNow.prototype.taskSave = function(ev, tg) {
-      var cid, t, tid, val, _ref;
-      val = tg.val();
-      _ref = this.catAndTask(tg), cid = _ref[0], tid = _ref[1];
-      t = this.todos[cid].tasks;
-      this.todos[cid].tasks = val.trim() === "" ? t.slice(0, tid).concat(t.slice(tid + 1, t.length)) : t.slice(0, tid).concat([val]).concat(t.slice(tid + 1));
-      return this.save();
-    };
-
-    RightNow.prototype.maybeTaskSave = function(ev) {
-      var cid, code, tg, tid, _ref;
-      console.log(ev);
-      code = ev.keyCode ? ev.keyCode : ev.which;
-      tg = $(ev.currentTarget);
-      _ref = this.catAndTask(tg), cid = _ref[0], tid = _ref[1];
-      if (code === 13) return this.taskSave(ev, tg);
-      if (code === 27) return this.cleanAndEndEdits();
-    };
-
-    RightNow.prototype.deleteTask = function(ev) {
-      var cid, t, tg, tid, _ref;
-      ev.stopPropagation();
-      tg = $(ev.currentTarget);
-      console.log(tg);
-      _ref = this.catAndTask(tg), cid = _ref[0], tid = _ref[1];
-      t = this.todos[cid].tasks;
-      this.todos[cid].tasks = t.slice(0, tid).concat(t.slice(tid + 1, t.length));
-      return this.save();
-    };
-
-    RightNow.prototype.editRender = function(tg) {
-      var cid, edit_render, task, tid, _ref;
-      var _this = this;
-      if (tg.hasClass('editing')) return;
-      this.endEdits();
-      _ref = this.catAndTask(tg), cid = _ref[0], tid = _ref[1];
-      if (cid === null || cid === null) return;
-      task = this.todos[cid].tasks[tid];
-      if (task === null) return;
-      console.log(tg, cid, tid, "[" + task + "]");
-      edit_render = function(cid, tid, task) {
-        return "<div class=\"edit-task\">" + ("<input type=\"text\" value=\"" + task + "\" id=\"edit-" + cid + "-" + tid + "\" ") + "class=\"edit-task-field\" />" + ("<button class=\"delete-task-field\" id=\"del-" + cid + "-" + tid + "\">&#x02A2F;</button>") + "</div>";
-      };
-      tg.addClass('editing');
-      tg.html(edit_render(cid, tid, task));
-      $('input.edit-task-field', tg).on('keyup', this.maybeTaskSave);
-      $('.edit-task', tg).on('click', function(ev) {
-        return ev.stopPropagation();
-      });
-      $('.delete-task-field', tg).on('click', this.deleteTask);
-      return $('input.edit-task-field', tg).focus();
-    };
-
-    RightNow.prototype.editCatRender = function(tg) {
-      var cid, edit_render, task, tid, _ref;
-      var _this = this;
-      if (tg.hasClass('editing')) return;
-      this.endEdits();
-      _ref = this.catAndTask(tg), cid = _ref[0], tid = _ref[1];
-      if (cid === null || cid === null) return;
-      task = this.todos[cid].tasks[tid];
-      if (task === null) return;
-      console.log(tg, cid, tid, "[" + task + "]");
-      edit_render = function(cid, tid, task) {
-        return "<div class=\"edit-task\">" + ("<input type=\"text\" value=\"" + task + "\" id=\"edit-" + cid + "-" + tid + "\" ") + "class=\"edit-task-field\" />" + ("<button class=\"delete-task-field\" id=\"del-" + cid + "-" + tid + "\">&#x02A2F;</button>") + "</div>";
-      };
-      tg.addClass('editing');
-      tg.html(edit_render(cid, tid, task));
-      $('input.edit-task-field', tg).on('keyup', this.maybeTaskSave);
-      $('.edit-task', tg).on('click', function(ev) {
-        return ev.stopPropagation();
-      });
-      $('.delete-task-field', tg).on('click', this.deleteTask);
-      return $('input.edit-task-field', tg).focus();
-    };
-
-    RightNow.prototype.newTask = function(ev) {
-      var cid, tg, tid;
-      var _this = this;
-      ev.stopPropagation();
-      tg = $($(ev.currentTarget).closest('li'));
-      $('.fadebutton', tg).hide();
-      cid = this.catOnly(tg);
-      tid = this.todos[cid].tasks.length;
-      this.todos[cid].tasks.push("");
-      $("li#cat-" + cid + " ul").append("<li id=\"cat-" + cid + "-" + tid + "\" class=\"task\"></li>");
-      return setTimeout((function() {
-        return _this.editRender($("#cat-" + cid + "-" + tid));
-      }), 10);
-    };
-
-    RightNow.prototype.editTask = function(ev) {
-      var tg;
-      ev.stopPropagation();
-      tg = $(ev.currentTarget);
-      return this.editRender(tg);
-    };
-
-    RightNow.prototype.connect = function() {};
 
     RightNow.prototype.render = function() {
-      $('#todos').html(this.cat_render(this.todos));
+      var cat_render;
+      cat_render = function(cat) {
+        var cat_enumerate, cat_renderer, i, tasks_render;
+        cat_enumerate = function(c) {
+          var i, _ref, _results;
+          if (c.length === 0) return [];
+          _results = [];
+          for (i = 0, _ref = c.length - 1; 0 <= _ref ? i <= _ref : i >= _ref; 0 <= _ref ? i++ : i--) {
+            _results.push({
+              idx: i,
+              name: c[i].name,
+              tasks: c[i].tasks
+            });
+          }
+          return _results;
+        };
+        cat_renderer = function(c, rendered_tasks) {
+          return ("<li id=\"cat-" + c.idx + "\" class=\"cat\">") + "<div class=\"catcontainer\">" + ("<div class=\"category\" id=\"cdv-" + c.idx + "\" >" + c.name + "</div>") + ("<button class=\"fadebutton editcat\" id=\"cec-" + c.idx + "\" style=\"display:none\">Edit Category</button>") + ("<button class=\"fadebutton addstory\" id=\"cas-" + c.idx + "\" style=\"display:none\">+ New Project</button>") + ("</div></div>" + rendered_tasks + "</li>");
+        };
+        tasks_render = function(cid, tasks) {
+          var t, task_enumerate, tasks_renderer;
+          task_enumerate = function(t) {
+            var i, _ref, _results;
+            if (t.length === 0) return [];
+            _results = [];
+            for (i = 0, _ref = t.length - 1; 0 <= _ref ? i <= _ref : i >= _ref; 0 <= _ref ? i++ : i--) {
+              _results.push({
+                idx: i,
+                task: t[i]
+              });
+            }
+            return _results;
+          };
+          tasks_renderer = function(cid, tid, task) {
+            return "<li id=\"cat-" + cid + "-" + tid + "\" class=\"task\"><div>" + task + "</div></li>";
+          };
+          return ("<ul class=\"tasklist\" id=\"tasklist-" + cid + "\">") + ((function() {
+            var _i, _len, _ref, _results;
+            _ref = task_enumerate(tasks);
+            _results = [];
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              t = _ref[_i];
+              _results.push(tasks_renderer(cid, t.idx, t.task));
+            }
+            return _results;
+          })()).join("") + "</ul>";
+        };
+        return "<ul id=\"categorylist\">" + ((function() {
+          var _i, _len, _ref, _results;
+          _ref = cat_enumerate(cat);
+          _results = [];
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            i = _ref[_i];
+            _results.push(cat_renderer(i, tasks_render(i.idx, i.tasks)));
+          }
+          return _results;
+        })()).join("") + "</ul>";
+      };
+      $('#todos').html(cat_render(this.todos));
       $('div.category').on('click', this.showAddButton);
-      $('#newcat h1').on('click', this.showAddButton);
-      $('li.task').on('click', this.editTask);
-      return $('.addstory').on('click', this.newTask);
+      $('.editcat').on('click', this.editCategory);
+      $('.addstory').on('click', this.newTask);
+      return $('li.task').on('click', this.editTask);
     };
 
     return RightNow;
@@ -265,9 +292,9 @@
     var rightnow;
     return rightnow = new Lawnchair({
       name: 'RightNow'
-    }, function(rightnow) {
+    }, function() {
       var handler;
-      return handler = new RightNow(rightnow);
+      return handler = new RightNow(this);
     });
   });
 

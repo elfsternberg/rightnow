@@ -9,39 +9,22 @@
     %link{:rel => "shortcut icon", :type => "image/png", :href => "images/favicon.png"}/
     %title Right Now: What Are You Doing?
 
-    %script#todo-template(type="text/x-underscore-tmpl")
-      %ul
-        <% for (var i=0,l=categories.length;i<l;++i) { var ct=categories[i]; %>
-        %li(id="cat-<%= i %>" class="category")
-          <div class="category"><%= ct.name %> <button class="addcat" style="display: none">+ New Project</button></div>
-          <% if (ct.tasks.length > 0) { %>
-          %ul
-            <% for (var j=0,m=ct.tasks.length;j<m;++j) { var td=ct.tasks[j]; %>
-            %li(id="cat-<%= i %>-<%= j %>" class="task")
-              <div><%= td %></div>
-            <% } %>
-          <% } %>
-        <% } %>
-
-    %script#todo-edit-template(type="text/x-underscore-tmpl")
-      .edit-task
-        %input(type="text" value="<%= task %>" id="edit-<%= catid %>-<%= taskid %>" class="edit-task-field")/
-        %button(class="delete-task-field" data-task="<%= catid %>-<%= taskid %>") &#x02A2F;
-
   %body
     #content
       #braindiv
-        %img(src="brain-in-a-jar.jpg" alt="Your Brain Is Here.  Are You?")
-        .msg
+        #img
+        #msg
           Right now, it&rsquo;s <span id="thetime"></span>.
           %p Is <strong>this</strong></p>
           %p what you want</p>
           %p to be <strong class="doing">doing</strong>
           %p right now?
+      .clearoncolumn
       #rightnow
         #newcat
           %h1 Wouldn't you <strong>rather</strong> be: 
-          <button class="fadebutton addcat" style="display: none">+ New Category</button>
+          <button class="fadebutton" id="addcat" style="display: none">+ New Category</button>
+        .div(style="clear:both")
         #todos
   
     %script{:language => "javascript", :type => "text/javascript", :src => "clock.js"}

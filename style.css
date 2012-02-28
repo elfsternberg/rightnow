@@ -5,16 +5,28 @@
   padding: 0;
 }
 body {
-  margin: .25in .75in .25in 1.5in;
   font: 13pt/190% Calibri, Georgia, "Lucida Bright", Lucidabright, "Bitstream Vera Serif", serif;
   background-color: #fff;
 }
+@media only screen and (min-width: 480px) {
+  body {
+    margin: .25in .75in .25in 1.5in;
+  }
+  .clearoncolumn {
+    clear: none;
+  }
+}
+@media only screen and (max-width: 479px) {
+  body {
+    margin: 2% 2%  0 6%;
+  }
+  .clearoncolumn {
+    clear: both;
+  }
+}
 p,
-th,
-td,
 li,
-ul,
-ol {
+ul {
   color: #333333;
   margin: 0;
   padding: 0;
@@ -22,11 +34,66 @@ ol {
 p {
   padding-bottom: 1em;
 }
+ul {
+  margin-left: 4%;
+}
+ul + p {
+  margin-top: 1em;
+}
+#content {
+  max-width: 732px;
+}
+#braindiv #msg {
+  font-size: 24px;
+  color: #999;
+}
+#braindiv #msg p {
+  width: 7em;
+  font-size: 20px;
+  margin: -3px 0 -8px 0;
+  padding: 0 0 0 0;
+}
+#braindiv #msg p .doing {
+  color: #c00;
+}
+@media only screen and (min-width: 480px) {
+  #braindiv {
+    float: left;
+    width: 45%;
+    padding-right: 5%;
+  }
+  #braindiv #img {
+    width: 164px;
+    height: 226px;
+    background: url(brain-in-a-jar.jpg) top right no-repeat;
+    padding: 0 0 1em 0;
+  }
+}
+@media only screen and (max-width: 479px) {
+  #braindiv {
+    width: 100%;
+    padding-bottom: 2em;
+  }
+  #braindiv #img {
+    float: left;
+    width: 37.5%;
+    min-width: 122px;
+    height: 165px;
+    background: url(brain-in-a-jar-sm.jpg) top right no-repeat;
+    padding: 0 0 1em 0;
+  }
+  #braindiv #msg {
+    float: right;
+    width: 60.353125%;
+  }
+}
 #rightnow {
   float: left;
   width: 49.9%;
 }
 #rightnow h1 {
+  display: block;
+  float: left;
   padding-bottom: 0;
   border: none;
   color: #333;
@@ -42,49 +109,33 @@ p {
   font-size: 20px;
   margin-left: 12%;
 }
+#rightnow ul li .catcontainer {
+  display: inline-block;
+}
+#rightnow ul li .catcontainer .category {
+  display: inline-block;
+}
 #rightnow ul li ul {
   margin-top: 5px;
   font-size: 17px;
 }
-ul, ol {
-  margin-left: 4%;
+.fadebutton,
+.addstory,
+.addcat,
+.editcat {
+  cursor: pointer;
+  display: block;
+  float: right;
+  background-color: #ff9f00;
+  font-weight: bold;
+  padding: 2px 6px 3px 6px;
+  color: #111;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+  margin-left: 10px;
 }
-ul + p, ol + p {
-  margin-top: 1em;
-}
-hr {
-  border: 0;
-  width: 98%;
-  color: #999;
-  background-color: #eee;
-  height: 1px;
-  margin: 10px 0;
-}
-/* Everything above this is just a reset. */
-#content {
-  max-width: 732px;
-}
-#braindiv {
-  float: left;
-  width: 45%;
-  padding-right: 5%;
-}
-#braindiv img {
-  padding-bottom: 1em;
-}
-#braindiv .msg {
-  font-size: 24px;
-  color: #999;
-}
-#braindiv p {
-  width: 7em;
-  font-size: 20px;
-  margin: -3px 0 -8px 0;
-  padding: 0 0 0 0;
-}
-#braindiv p .doing {
-  color: #c00;
-}
+.edit-category,
 .edit-task {
   padding: 4px 2px 0px 5px;
   text-shadow: 0px 1px 0px #fff;
@@ -97,6 +148,7 @@ hr {
   box-shadow: 2px 1px 0px #efefef;
   width: 80%;
 }
+.edit-category input.edit-task-field,
 .edit-task input.edit-task-field {
   width: 80%;
   border: 1px solid #eee;
@@ -107,6 +159,7 @@ hr {
   -moz-border-radius: 20px;
   border-radius: 20px;
 }
+.edit-category button.delete-task-field,
 .edit-task button.delete-task-field {
   margin-top: 4px;
   padding: 1px 4px 3px 3px;
@@ -119,14 +172,4 @@ hr {
   -webkit-border-radius: 20px;
   -moz-border-radius: 20px;
   border-radius: 20px;
-}
-.addstory, .addcat, .editcat {
-  background-color: #ff9f00;
-  font-weight: bold;
-  padding: 2px 6px 3px 6px;
-  color: #111;
-  -webkit-border-radius: 20px;
-  -moz-border-radius: 20px;
-  border-radius: 20px;
-  margin-left: 10px;
 }
