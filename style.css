@@ -24,9 +24,7 @@ body {
     clear: both;
   }
 }
-p,
-li,
-ul {
+p, li, ul {
   color: #333333;
   margin: 0;
   padding: 0;
@@ -135,8 +133,7 @@ ul + p {
   border-radius: 20px;
   margin-left: 10px;
 }
-.edit-category,
-.edit-task {
+.edit-category, .edit-task {
   padding: 4px 2px 0px 5px;
   text-shadow: 0px 1px 0px #fff;
   -webkit-border-radius: 20px;
@@ -148,8 +145,7 @@ ul + p {
   box-shadow: 2px 1px 0px #efefef;
   width: 80%;
 }
-.edit-category input.edit-task-field,
-.edit-task input.edit-task-field {
+.edit-category input.edit-task-field, .edit-task input.edit-task-field {
   width: 80%;
   border: 1px solid #eee;
   padding-bottom: 0;
@@ -159,8 +155,7 @@ ul + p {
   -moz-border-radius: 20px;
   border-radius: 20px;
 }
-.edit-category button.delete-task-field,
-.edit-task button.delete-task-field {
+.edit-category button.delete-task-field, .edit-task button.delete-task-field {
   margin-top: 4px;
   padding: 1px 4px 3px 3px;
   font-weight: bold;

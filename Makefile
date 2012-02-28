@@ -1,10 +1,15 @@
 .PHONY: watch
 
-HAML=haml
+HAML=/usr/bin/haml
 COFFEE = coffee
 LESSCSS=lessc
 CLOSURE=java -jar $(CURDIR)/build/compiler.jar
-# INCLUDES=--js jquery-1.7.1.js --js underscore.js --js backbone.js --js backbone-relational.js --js jquery-ui-1.8.17.custom.min.js --js json2.js
+INCLUDES=--js lib/json2.js \
+ --js lib/lawnchair.js \
+ --js lib/lawnchair-dom.js \
+ --js lib/lawnchair-indexed-db.js \
+ --js lib/lawnchair-window-name.js \
+ --js lib/zepto.js
 
 all: index.html style.css todo.js
 
@@ -18,8 +23,7 @@ index.html: index.haml
 	$(HAML) --unix-newlines --no-escape-attrs --double-quote-attributes $< > $@
 
 compile: all
-	cd app/attachments/js ; \
-	${CLOSURE} ${INCLUDES} --js ptah.js --js_output_file compiled_ptah.js
+	${CLOSURE} ${INCLUDES} --js clock.js.js --js todo.js --js_output_file compiled.js
 
 watch:
 	while inotifywait *.less *.haml *.coffee ; do make all; done

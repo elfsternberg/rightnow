@@ -9,7 +9,8 @@ class RightNow
             # You'll find the next two triggers in the HTML file
             $('#newcat h1').on 'click', @showAddButton
             $('#addcat').on 'click', @newCategory
-
+            # $('#newcat h1').on 'tap', @showAddButton
+            # $('#addcat').on 'tap', @newCategory
 
     save: ->
         @repo.save {key: 'rightnow', 'rightnow': @todos}, () =>
@@ -28,6 +29,9 @@ class RightNow
         tg.fadeIn('fast')
         clearTimeout(tg.data("fader")) if tg.data("fader")
         tg.data("fader", setTimeout (() -> if tg.css("display") != "none" then tg.fadeOut('fast')), 2500)
+
+    hideAllButtons: ->
+        $('.fadebutton').hide()
 
     editCategory: (ev) =>
         ev.stopPropagation()
@@ -61,10 +65,14 @@ class RightNow
             return catSave() if code == 13
             return @cleanAndRender() if code == 27
 
+        @hideAllButtons()
         $('.edit-category', tg).on 'click', (ev) => ev.stopPropagation()
         $('input.edit-task-field', tg).on 'keyup', maybeCatSave
         $('.delete-task-field', tg).on 'click', deleteCat
         $('input.edit-task-field', tg).focus()
+
+        # $('.delete-task-field', tg).on 'tap', deleteCat
+        # $('.edit-category', tg).on 'tap', (ev) => ev.stopPropagation()
 
     newCategory: (ev) =>
         ev.stopPropagation()
@@ -84,10 +92,13 @@ class RightNow
             return catSave() if code == 13
             return @cleanAndRender() if code == 27
 
+        @hideAllButtons()
         $('.edit-category', tg).on 'click', (ev) => ev.stopPropagation()
         $('input.edit-task-field', tg).on 'keyup', maybeNewCatSave
         $('.delete-task-field', tg).on 'click', @render
         $('input.edit-task-field', tg).focus()
+        # $('.edit-category', tg).on 'tap', (ev) => ev.stopPropagation()
+        # $('.delete-task-field', tg).on 'tap', @render
 
     editTask: (ev) =>
         ev.stopPropagation()
@@ -120,10 +131,13 @@ class RightNow
             return taskSave() if code == 13
             return @cleanAndRender() if code == 27
 
+        @hideAllButtons()
         $('.edit-category', tg).on 'click', (ev) => ev.stopPropagation()
         $('input.edit-task-field', tg).on 'keyup', maybeTaskSave
         $('.delete-task-field', tg).on 'click', deleteTask
         $('input.edit-task-field', tg).focus()
+        # $('.delete-task-field', tg).on 'tap', deleteTask
+        # $('.edit-category', tg).on 'tap', (ev) => ev.stopPropagation()
 
     newTask: (ev) =>
         ev.stopPropagation()
@@ -145,10 +159,13 @@ class RightNow
             return taskSave() if code == 13
             return @cleanAndRender() if code == 27
 
+        @hideAllButtons()
         $('.edit-category', tg).on 'click', (ev) => ev.stopPropagation()
         $('input.edit-task-field', tg).on 'keyup', maybeNewTaskSave
         $('.delete-task-field', tg).on 'click', @render
         $('input.edit-task-field', tg).focus()
+        # $('.delete-task-field', tg).on 'tap', @render
+        # $('.edit-category', tg).on 'tap', (ev) => ev.stopPropagation()
 
 
     # Restores the todo state list by clearing out the dead entries
@@ -198,6 +215,11 @@ class RightNow
         $('.editcat').on 'click', @editCategory
         $('.addstory').on 'click', @newTask
         $('li.task').on 'click', @editTask
+
+        # $('div.category').on 'tap', @showAddButton
+        # $('.editcat').on 'tap', @editCategory
+        # $('.addstory').on 'tap', @newTask
+        # $('li.task').on 'tap', @editTask
 
 
 $ ->
