@@ -213,6 +213,12 @@ class RightNow
 
         $('#todos').html(cat_render(@todos))
 
+        if (@todos.length) == 0 and $('#message').css("display") == "none"
+            $('#message').fadeIn('fast')
+
+        if (@todos.length) != 0 and $('#message').css("display") != "none"
+            $('#message').fadeOut('fast')
+
         $('div.category').on 'click', @showAddButton
         $('.editcat').on 'click', @editCategory
         $('.addstory').on 'click', @newTask

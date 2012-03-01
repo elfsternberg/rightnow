@@ -286,6 +286,12 @@
         })()).join("") + "</ul>";
       };
       $('#todos').html(cat_render(this.todos));
+      if (this.todos.length === 0 && $('#message').css("display") === "none") {
+        $('#message').fadeIn('fast');
+      }
+      if (this.todos.length !== 0 && $('#message').css("display") !== "none") {
+        $('#message').fadeOut('fast');
+      }
       $('div.category').on('click', this.showAddButton);
       $('.editcat').on('click', this.editCategory);
       $('.addstory').on('click', this.newTask);

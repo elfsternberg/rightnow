@@ -26,6 +26,35 @@
           <button class="fadebutton" id="addcat" style="display: none">+ New Category</button>
         .div(style="clear:both")
         #todos
+    #message(style="display:none")
+      %h2 How to Use
+      %p
+        <b>Right Now!</b> is a simple project reminder. It's not a
+        to-do list or project manager.  It's just a <i>reminder</i>.
+        After <a
+        href="https://github.com/elfsternberg/rightnow">downloading
+        and installing <b>Right Now!</b> locally</a>, set the
+        index.html file as your home page, open a new tab and click on
+        the "Wouldn't you <b>rather</b> be:" line.
+
+      %p
+        The idea is simple: every time you open your browser or click
+        "New Tab," you'll get the <b>Right Now!</b> page.  With it is
+        a reminder that time is fleeting, you have only so much time
+        until you, too, will be a brain in a jar full of formaldehyde,
+        and a list of what you consider you really would <b>rather</b>
+        be doing right now.  Clicking outside the edit area will
+        return your list to normal.
+        
+      %p 
+        All the data is stored locally using the browser's own local
+        storage mechanism.  There is no server, and no data is ever
+        sent anywhere.  Everything on your screen is yours, kept as
+        secure as you keep your physical hardware.
+
+      %p 
+        This message will disappear as soon as you've created your
+        first entry.
   
     %script{:language => "javascript", :type => "text/javascript", :src => "clock.js"}
     %script{:language => "javascript", :type => "text/javascript", :src => "lib/json2.js"}
