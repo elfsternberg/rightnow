@@ -3,13 +3,13 @@
 HAML=/usr/bin/haml
 COFFEE = coffee
 LESSCSS=lessc
-CLOSURE=java -jar $(CURDIR)/build/compiler.jar
-INCLUDES=--js lib/json2.js \
- --js lib/lawnchair.js \
- --js lib/lawnchair-dom.js \
- --js lib/lawnchair-indexed-db.js \
- --js lib/lawnchair-window-name.js \
- --js lib/zepto.js
+COMPILER=uglifyjs 
+INCLUDES= lib/json2.js \
+ lib/lawnchair.js \
+ lib/lawnchair-dom.js \
+ lib/lawnchair-indexed-db.js \
+ lib/lawnchair-window-name.js \
+ lib/zepto.js
 
 all: index.html style.css todo.js
 
@@ -23,7 +23,7 @@ index.html: index.haml
 	$(HAML) --unix-newlines --no-escape-attrs --double-quote-attributes $< > $@
 
 compile: all
-	${CLOSURE} ${INCLUDES} --js clock.js.js --js todo.js --js_output_file compiled.js
+	cat clock.js ${INCLUDES} todo.js | ${COMPILER} > compiled.js
 
 watch:
 	while inotifywait *.less *.haml *.coffee ; do make all; done
