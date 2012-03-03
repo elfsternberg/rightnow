@@ -7,14 +7,13 @@ COMPILER=uglifyjs
 INCLUDES= lib/json2.js \
  lib/lawnchair.js \
  lib/lawnchair-dom.js \
- lib/lawnchair-indexed-db.js \
  lib/lawnchair-window-name.js \
- lib/zepto.js
+ lib/jquery-1.7.1.js
 
 all: index.html style.css todo.js
 
 todo.js: todo.coffee
-	$(COFFEE) --compile --lint  $<
+	$(COFFEE) --compile --lint $<
 
 style.css: style.less
 	$(LESSCSS) $< $@

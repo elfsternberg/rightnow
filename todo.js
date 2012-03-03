@@ -4,6 +4,8 @@
 
   RightNow = (function() {
 
+    RightNow.prototype.nohelp = false;
+
     function RightNow(repo) {
       var _this = this;
       this.repo = repo;
@@ -18,7 +20,12 @@
         _this.render();
         $('body').on('click', _this.render);
         $('#newcat h1').on('click', _this.showAddButton);
-        return $('#addcat').on('click', _this.newCategory);
+        $('#addcat').on('click', _this.newCategory);
+        return $('#preclose').on('click', function(ev) {
+          ev.preventDefault();
+          _this.nohelp = true;
+          return $('#message').fadeOut();
+        });
       });
     }
 
@@ -227,7 +234,7 @@
     };
 
     RightNow.prototype.render = function() {
-      var cat_render;
+      var cat_render, msg;
       cat_render = function(cat) {
         var cat_enumerate, cat_renderer, i, tasks_render;
         cat_enumerate = function(c) {
@@ -286,11 +293,12 @@
         })()).join("") + "</ul>";
       };
       $('#todos').html(cat_render(this.todos));
-      if (this.todos.length === 0 && $('#message').css("display") === "none") {
-        $('#message').fadeIn('fast');
+      msg = $('#message');
+      if (this.todos.length === 0 && msg.css("display") === "none" && !this.nohelp) {
+        msg.fadeIn('fast');
       }
-      if (this.todos.length !== 0 && $('#message').css("display") !== "none") {
-        $('#message').fadeOut('fast');
+      if (this.todos.length !== 0 && msg.css("display") !== "none") {
+        msg.fadeOut('fast');
       }
       $('div.category').on('click', this.showAddButton);
       $('.editcat').on('click', this.editCategory);

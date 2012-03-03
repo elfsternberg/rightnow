@@ -1,5 +1,7 @@
 class RightNow
 
+    nohelp: false
+
     constructor: (@repo) ->
         @repo.get 'rightnow', (cat) =>
             @todos = if cat? and cat.rightnow? then cat.rightnow else []
@@ -11,6 +13,11 @@ class RightNow
             $('#addcat').on 'click', @newCategory
             # $('#newcat h1').on 'tap', @showAddButton
             # $('#addcat').on 'tap', @newCategory
+
+            $('#preclose').on 'click', (ev) =>
+                ev.preventDefault()
+                @nohelp = true
+                $('#message').fadeOut()
 
     save: ->
         @repo.save {key: 'rightnow', 'rightnow': @todos}, () =>
@@ -213,11 +220,12 @@ class RightNow
 
         $('#todos').html(cat_render(@todos))
 
-        if (@todos.length) == 0 and $('#message').css("display") == "none"
-            $('#message').fadeIn('fast')
+        msg = $('#message')
+        if (@todos.length) == 0 and msg.css("display") == "none" and not @nohelp
+            msg.fadeIn('fast')
 
-        if (@todos.length) != 0 and $('#message').css("display") != "none"
-            $('#message').fadeOut('fast')
+        if (@todos.length) != 0 and msg.css("display") != "none"
+            msg.fadeOut('fast')
 
         $('div.category').on 'click', @showAddButton
         $('.editcat').on 'click', @editCategory

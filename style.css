@@ -8,6 +8,12 @@ body {
   font: 13pt/190% Calibri, Georgia, "Lucida Bright", Lucidabright, "Bitstream Vera Serif", serif;
   background-color: #fff;
 }
+body {
+  margin: .25in .75in .25in 1.5in;
+}
+.clearoncolumn {
+  clear: none;
+}
 @media only screen and (min-width: 480px) {
   body {
     margin: .25in .75in .25in 1.5in;
@@ -24,9 +30,7 @@ body {
     clear: both;
   }
 }
-p,
-li,
-ul {
+p, li, ul {
   color: #333333;
   margin: 0;
   padding: 0;
@@ -55,6 +59,17 @@ ul + p {
 }
 #braindiv #msg p .doing {
   color: #c00;
+}
+#braindiv {
+  float: left;
+  width: 45%;
+  padding-right: 5%;
+}
+#braindiv #img {
+  width: 164px;
+  height: 226px;
+  background: url(brain-in-a-jar.jpg) top right no-repeat;
+  padding: 0 0 1em 0;
 }
 @media only screen and (min-width: 480px) {
   #braindiv {
@@ -144,8 +159,7 @@ div.category,
 li.task {
   cursor: pointer;
 }
-.edit-category,
-.edit-task {
+.edit-category, .edit-task {
   padding: 4px 2px 0px 5px;
   text-shadow: 0px 1px 0px #fff;
   -webkit-border-radius: 20px;
@@ -157,8 +171,7 @@ li.task {
   box-shadow: 2px 1px 0px #efefef;
   width: 80%;
 }
-.edit-category input.edit-task-field,
-.edit-task input.edit-task-field {
+.edit-category input.edit-task-field, .edit-task input.edit-task-field {
   width: 80%;
   border: 1px solid #eee;
   padding-bottom: 0;
@@ -168,8 +181,7 @@ li.task {
   -moz-border-radius: 20px;
   border-radius: 20px;
 }
-.edit-category button.delete-task-field,
-.edit-task button.delete-task-field {
+.edit-category button.delete-task-field, .edit-task button.delete-task-field {
   margin-top: 4px;
   padding: 1px 4px 3px 3px;
   font-weight: bold;
