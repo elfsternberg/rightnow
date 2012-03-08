@@ -14,3 +14,10 @@ RightNow! is intended to be downloaded and kept on your filesystem,
 and you can then set it to be your "new tab" and "home page" pages, so
 that every time you succumb to the impulse to surf the Internet, your
 first view will be a list of the things you really ought to be doing.
+
+If you just want to *use* RightNow!, download the ZIP file (see
+"Downloads" in the upper right hand corner) and copy the file
+"index.html" from the directory "one-page" to your filesystem, and set
+that page as your home page.  For most modern browsers, that one page
+contains everything you need: embedded images, in-line styles, and
+included interactivity.
